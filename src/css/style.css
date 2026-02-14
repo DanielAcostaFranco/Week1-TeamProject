@@ -220,3 +220,13 @@ footer {
   font-size: var(--small-font);
   padding: 1em;
 }
+
+.product-items {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  width: 40%;
+  margin: auto;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  gap: 30px;
+}
