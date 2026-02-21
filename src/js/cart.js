@@ -1,30 +1,58 @@
-import { getLocalStorage } from "./utils.mjs";
 import { loadHeaderFooter } from "./utils.mjs";
-loadHeaderFooter();
+import ShoppingCart from "./shoppingCart.mjs";
 
-function renderCartContents() {
-  const cartItems = getLocalStorage("so-cart");
-  const htmlItems = cartItems.map((item) => cartItemTemplate(item));
-  document.querySelector(".product-list").innerHTML = htmlItems.join("");
+/**
+ * Converts something like "$12.99" to 12.99
+ */
+function parsePrice(priceText) {
+  return Number(priceText.replace(/[^0-9.]/g, ""));
 }
 
-function cartItemTemplate(item) {
-  const newItem = `<li class="cart-card divider">
-  <a href="#" class="cart-card__image">
-    <img
-      src="${item.Image}"
-      alt="${item.Name}"
-    />
-  </a>
-  <a href="#">
-    <h2 class="card__name">${item.Name}</h2>
-  </a>
-  <p class="cart-card__color">${item.Colors[0].ColorName}</p>
-  <p class="cart-card__quantity">qty: 1</p>
-  <p class="cart-card__price">$${item.FinalPrice}</p>
-</li>`;
+/**
+ * Cart total based on rendered DOM (.cart-card).
+ * Works on the cart page after ShoppingCart() has rendered items.
+ */
+export function calculateCartTotal() {
+  const cartItems = document.querySelectorAll(".cart-card");
+  const emptyMessage = document.querySelector(".empty-cart");
+  let total = 0;
 
-  return newItem;
+  if (cartItems.length === 0) {
+    if (emptyMessage) emptyMessage.textContent = "No items in cart yet";
+    return 0;
+  }
+
+  cartItems.forEach((item) => {
+    const priceEl = item.querySelector(".cart-card__price");
+    const qtyEl = item.querySelector(".cart-card__quantity");
+    if (!priceEl || !qtyEl) return;
+
+    const price = parsePrice(priceEl.textContent);
+    const qty = Number(qtyEl.textContent.replace(/\D/g, ""));
+
+    total += price * qty;
+  });
+
+  return total;
 }
 
-renderCartContents();
+/**
+ * Only run cart-page behavior if we're on the cart page
+ * (i.e., if .product-list exists).
+ */
+document.addEventListener("DOMContentLoaded", () => {
+  loadHeaderFooter();
+
+  const productList = document.querySelector(".product-list");
+  if (!productList) return; // ✅ prevents checkout from crashing
+
+  // Render cart items (cart page only)
+  ShoppingCart();
+
+  // Update cart total (cart page only)
+  const total = calculateCartTotal();
+  const totalEl = document.querySelector(".cart-total");
+  if (totalEl) {
+    totalEl.textContent = `Total: $${total.toFixed(2)}`;
+  }
+});

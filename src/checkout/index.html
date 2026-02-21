@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 
 <html lang="en">
   <head>
@@ -9,18 +9,77 @@
     <title>Sleep Outside | Checkout</title>
 
     <link rel="stylesheet" href="../css/style.css" />
-    <script src="../js/checkout.js" type="module"></script>
+    <script type="module" src="/js/checkout.js"></script>
   </head>
 
   <body>
-    <header class="header" id="main-header"></header>
+    <header class="divider" id="main-header"></header>
 
     <main class="divider">
       <section class="products">
         <h2>Review & Place your Order</h2>
       </section>
+      <form class="checkout-form">
+
+        <fieldset class="shipping-info">
+          <legend>Shipping</legend>
+            <!-- First Name -->
+            <label for="fname">First Name</label>
+            <input type="text" id="fname" class="fname" name="fname" minlength="3" maxlength="20" required>
+
+            <!-- Last Name -->
+            <label for="lname">Last Name</label>
+            <input type="text" id="lname" name="lname" class="lname" minlength="3" maxlength="20" required>
+
+            <!-- Street Address -->
+            <label for="street">Street</label>
+            <input type="text" id="street" class="street" name="street" required>
+
+            <!-- City -->
+            <label for="city">City</label>
+            <input type="text" id="city" class="city" name="city" required>
+
+            <!-- State -->
+            <label for="state">State</label>
+            <input type="text" id="state" class="state" name="state" required>
+
+            <!-- ZIP -->
+            <label for="zip">Zip</label>
+            <input type="text" id="zip" name="zip" pattern="[0-9]{5}" name="zip" required>       
+        </fieldset>
+
+        <fieldset>
+          <legend>Payment</legend>
+
+          <!-- Cart Number -->
+           <label for="card-number">Cart Number</label>
+           <input type="text" id="card-number" name="cart-number" pattern="[0-9]{16}" maxlength="16" placeholder="1234 5678 9012 3456" required>
+
+           <!-- Expiration -->
+            <label for="expiration">Expiration</label>
+            <input type="month" id="expiration" name="expiration" required>
+
+            <!-- Secuirty Code -->
+             <label for="cvv">Security Code</label>
+             <input type="text" id="cvv" name="cvv" pattern="[0-9]{3}" maxlength="3" placeholder="123">
+        </fieldset>
+
+        <fieldset>
+          <legend>Order Summary</legend>
+          <p class="item-subtotal"></p>
+
+          <p>Shipping Estimate</p>
+          <p>Tax</p>
+
+          <p class="order-total">Order Total</p>
+        </fieldset>
+
+        <button type="submit">Checkout</button>
+
+
+      </form>
     </main>
 
-    <footer class="footer" id="main-footer"></footer>
+    <footer id="main-footer"></footer>
   </body>
 </html>
