@@ -45,7 +45,7 @@
 
             <!-- ZIP -->
             <label for="zip">Zip</label>
-            <input type="text" id="zip" name="zip" pattern="[0-9]{5}" name="zip" required>       
+            <input type="text" id="zip" name="zip" pattern="[0-9]{5}" required>       
         </fieldset>
 
         <fieldset>
@@ -53,7 +53,7 @@
 
           <!-- Cart Number -->
            <label for="card-number">Cart Number</label>
-           <input type="text" id="card-number" name="cart-number" pattern="[0-9]{16}" maxlength="16" placeholder="1234 5678 9012 3456" required>
+           <input type="text" id="card-number" name="cardNumber" pattern="[0-9]{16}" maxlength="16" placeholder="1234 5678 9012 3456" required>
 
            <!-- Expiration -->
             <label for="expiration">Expiration</label>
@@ -61,17 +61,19 @@
 
             <!-- Secuirty Code -->
              <label for="cvv">Security Code</label>
-             <input type="text" id="cvv" name="cvv" pattern="[0-9]{3}" maxlength="3" placeholder="123">
+             <input type="text" id="cvv" name="code" pattern="[0-9]{3}" maxlength="3" placeholder="123">
         </fieldset>
 
-        <fieldset>
+        <fieldset class="order-summary">
           <legend>Order Summary</legend>
-          <p class="item-subtotal"></p>
 
-          <p>Shipping Estimate</p>
-          <p>Tax</p>
+          <p id="cartTotal">Item Subtotal (0): $0.00</p>
+          <p id="shipping">Shipping Estimate: $0.00</p>
+          <p id="tax">Tax: $0.00</p>
 
-          <p class="order-total">Order Total</p>
+          <p id="orderTotal"><strong>Order Total: $0.00</strong></p>
+
+          <span id="num-items" hidden>0</span>
         </fieldset>
 
         <button type="submit">Checkout</button>
