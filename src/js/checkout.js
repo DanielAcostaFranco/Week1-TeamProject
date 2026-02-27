@@ -1,4 +1,4 @@
-import { loadHeaderFooter } from "./utils.mjs";
+import { loadHeaderFooter, alertMessage } from "./utils.mjs";
 import checkoutProcess from "./checkoutProcess.mjs";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -26,6 +26,11 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    const chk_status = form.checkValidity();
+    form.reportValidity();
+
+    if (!chk_status) return;
+
     checkoutProcess.calculateOrdertotal();
 
     try {
@@ -33,6 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("Order submitted successfully");
     } catch (err) {
       console.error("Checkout failed:", err);
+      alertMessage(JSON.stringify(err.message));
     }
   });
 });
