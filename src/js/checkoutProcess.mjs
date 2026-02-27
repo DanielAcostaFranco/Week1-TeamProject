@@ -1,5 +1,6 @@
-import { getLocalStorage } from "./utils.mjs";
+import { getLocalStorage} from "./utils.mjs";
 import { checkout as submitOrder } from "./externalServices.mjs";
+
 
 function formDataToJSON(formElement) {
   const formData = new FormData(formElement);
@@ -94,36 +95,43 @@ const checkoutProcess = {
     orderTotalEl.innerText = `Order Total: $${this.orderTotal.toFixed(2)}`;
   },
 
-  checkout: async function (form){
-    const data = formDataToJSON(form);
+checkout: async function (form){
+  const data = formDataToJSON(form);
 
-    const order = {
-      orderDate: new Date().toISOString(),
+  const order = {
+    orderDate: new Date().toISOString(),
 
-      fname: data.fname, 
-      lname: data.lname,
-      street: data.street,
-      city: data.city,
-      state: data.state,
-      zip: data.zip,
+    fname: data.fname, 
+    lname: data.lname,
+    street: data.street,
+    city: data.city,
+    state: data.state,
+    zip: data.zip,
 
-      cardNumber: data.cardNumber,
-      expiration: formatExpiration(data.expiration),
-      code: data.code,
+    cardNumber: data.cardNumber,
+    expiration: formatExpiration(data.expiration),
+    code: data.code,
 
-      items: packageItems(this.list),
+    items: packageItems(this.list),
 
-      orderTotal: this.orderTotal.toFixed(2),
-      shipping: this.shipping, 
-      tax: this.tax.toFixed(2),
-    };
+    orderTotal: this.orderTotal.toFixed(2),
+    shipping: this.shipping, 
+    tax: this.tax.toFixed(2),
+  };
 
+  try {
     const res = await submitOrder(order);
     console.log("Server response:", res);
-  },
 
-  formDataToJSON,
-  packageItems,
+    // Happy path
+    localStorage.removeItem(this.key);
+    window.location.href = "/checkout/success.html";
+
+  } catch (err) {
+    console.log("Checkout error:", err);
+    alert(JSON.stringify(err.message));
+  }
+},
 };
 
 export default checkoutProcess;
